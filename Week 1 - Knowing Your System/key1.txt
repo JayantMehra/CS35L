@@ -1,0 +1,155 @@
+Exercise 1.1
+
+1. e m a c s SP e x e r 1 . h t m l Enter
+2. C-s H T M L
+3. RET C-s s c a v e n g e r M-b
+4. C-s s e l f - r e f e r e n t i a l M-b M-b
+5. C-s a r r o w M-b
+6. C-e
+7. C-a
+8. Used emacs commands.
+9. No
+10. C-x C-c
+
+Exercise 1.2
+1. e m a c s SP e x e r 2 . h t m l Enter
+2. M-g g 1 8 Enter C-k
+3. M-< C-s D E L E T E - M E SP D E L E T E - M E SP D E L E T E - M E C-a C-k
+4. M-< C-s h t t p s : / / e n . w i k i p e d i a C-s C-a C-p C-k C-n C-k C-n C-k
+5. C-s < ! Enter C-b C-b C-@ C-f C-f C-f C-f C-f C-f C-f DEL 
+   C-s < ! - - Enter C-a C-k C-n C-k C-n C-k
+   C-s < ! - - Enter C-a C-k
+
+C-x C-c
+
+Exercise 1.3
+1. e m a c s SP e x e r 3 . h t m l Enter
+2. M-% A s s i g n m e n t 1 Enter A s s i g n m e n t 5 1 Enter y y Enter
+3. M-< U T F - 8 Enter U S - A S C I I Enter y Enter
+4. M-< C-s < / o l > Enter Enter
+5. C-x C-c y e s
+
+Exercise 1.4
+1. cat exer2.html exer2.diff >exer4.html
+2. e m a c s SP e x e r 4 . h t m l Enter
+3. M-> C-r < ! - Enter C-@ C-e M-w
+   M-g g 377 C-n C-n C-n C-y
+
+4. M-> C-r < ! - C-r Enter C-@ C-n C-n C-n C-f C-f M-w
+   M-g g 358 C-n C-n C-n C-n C-n C-y
+   C-a C-d C-p C-d C-p C-d
+   C-n C-n C-n DEL DEL DEL
+
+   M-> C-r < ! - - - Enter C-@ C-f C-f C-f M-w
+   M-g g 358 C-n C-n C-n C-n C-e C-b C-b C-b C-b C-b C-y
+
+   M-> C-r < ! - - SP Y Enter M-w
+   M-g g 321 C-n C-n C-n C-y
+   C-a C-d C-p C-d
+   C-n C-n DEL DEL
+
+   M-> C-r < ! - - SP D Enter C-@ C-e M-w
+   C-g 111 C-n C-n C-n C-y
+
+   M-> C-r < ! - - SP d i Enter C-@ C-e M-w
+   M-g g 15 C-n C-n C-n C-y
+
+5. M-> C-r < / h t C-r C-n C-n C-@ M-> DEL
+6. C-x u
+7. M-> C-r < / h t C-r C-n C-n < ! - - SP
+   M-> - - >
+
+8. M-< C-s < o l > M-s-o : There are 7 instances
+   M-% < o l > Enter < o L > Enter !
+
+9. C-x C-c y
+
+Exercise 1.5
+1. M-x m a k e - d i r e c t o r y Enter j u n k Enter
+2. C-x C-f h e l l o . c Enter C-y
+3. M-x c o m p i l e Enter BACKSPACE BACKSPACE BACKSPACE BACKSPACE BACKSPACE BACKSPACE BACKSPACE g c c h e l l o . c SP - o SP h e l l o Enter
+4. C-x b h e l l o - o u t
+   C-u M-! . / h e l l o
+5. C-@ M-> M-w C-x C-f BACKSPACE BACKSPACE BACKSPACE BACKSPACE BACKSPACE BACKSPACE BACKSPACE
+   / u / c s / u g r a d / j a y a n t / k e y 1 . t x t Enter C-y
+
+  #include <stdio.h>
+  int
+  main (void)
+  {
+    char n = '\n';
+    char b = '\\';
+    char q = '"';
+    char const *p = "#include <stdio.h>%cint%cmain (void)%c{%c  char n = '%cn';%c  char b = '%c%c';%c  char q = '%c';%c  cha\
+   r   const *p = %c%s%c;%c  printf (p, n, n, n, n, b, n, b, b, n, q, n, q, p, q, n, n, n, n);%c  return 0;%c}%c";
+    printf (p, n, n, n, n, b, n, b, b, n, q, n, q, p, q, n, n, n, n);
+    return 0;
+  }
+
+Exercise 1.6
+1. C-x b * s c r a t c h *
+2. ( r a n d o m ) C-j
+3. ( s e t q SP x SP ( r a n d o m ) ) Enter C-j
+   ( s e t q SP y SP ( r a n d o m ) ) Enter C-j
+4. (- SP x SP y) Enter C-j
+
+The answer was mathematically incorrect. When x was a negative integer and y was positive, x - y should have been a negative integer (negative sum that is). But it was positive. Similarly when x was positive and y was negative, the answer should have been positive but it was negative. Therefore, it produces an incorrect result when the sum (positive or negative) goes out of bounds.
+
+5. M-: (- SP x SP y) Enter does not produce a different output except for also printing #o (octal) and #x (hex) values. Also since input was in the minibuffer, output is also in the minibuffer.
+
+6. Random numbers in lisp are based on some initial seed. Therefore, they are not truly random in the mathematical sense since for the same initial seed, the numbers generated will always be the same. Thus, the algorithm to produce random numbers follows a pattern in some sense which ensures the above mentioned property and thus cannot be thought of as "random".
+
+7. The most-positive-fixnum (mpf) i.e. the largest positive number that can be produced by random function is 2305843009213693951. For ease of representation and calculation let it be 2.305 * 10^11.
+
+The most-negative-fixnum (mnf) i.e the smallest positive number that can be produced by random function is -2305843009213693952. For ease of representation and calculation let it be 2.305 * 10^11.
+
+Total numbers (positive, negative, and 0) = 2(2305843009213693952)
+
+Probability of selecting a single number, x = 1/2(2305843009213693952)
+
+If x = -2305843009213693952, then there will be 2305843009213693951 numbers which when subtracted from x can make the difference less than mnf. Therefore, the probability of selecting such a number is 2305843009213693951/2(2305843009213693952). And the probability of selecting such a combination is 
+1/2(2305843009213693952) * 2305843009213693951/2(2305843009213693952)
+
+
+When x = -2305843009213693951, then there will be 2305843009213693950 numbers which when subtracted from x can make the difference less than mnf and so on. Therefore, the 
+probability of selecting such a number is 2305843009213693950/2(2305843009213693952). And the probability of selecting such a combination is
+1/2(2305843009213693952) * 2305843009213693950/2(2305843009213693952).
+
+This will be the pattern until we reach -1 which will give us 0 numbers for y.
+Therefore, sum of all probabilities till -1 is [1/4(2305843009213693952)^2] * [(2305843009213693951(2305843009213693951+1)/2)]  (Using: n((n+1)/2)
+
+Similarly, when x = 0, then there will be 1 number which when subtracted from x can make the difference more than mpf. Therefore, the probability of selecting such a number is 1/2(2305843009213693952). And the probability of selecting such a combination is
+1/2(2305843009213693952) * 1/2(2305843009213693952).
+
+This will continue till the probability of such a combination becomes:
+1/2(2305843009213693952) * 2305843009213693952/2(2305843009213693952)
+
+Again sum of all probabilities is [1/4(2305843009213693952)^2] * [(2305843009213693952)(2305843009213693952+1)/2]
+
+Therefore, total probability : [1/4(2305843009213693952)^2] * [(2305843009213693951(2305843009213693951+1)/2)] + [1/4(2305843009213693952)^2] * [(2305843009213693952)(2305843009213693952+1)/2] 
+
+which is approximately equal to 25.02 * 10^-2 or 0.25
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

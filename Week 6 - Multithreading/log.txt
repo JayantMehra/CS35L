@@ -1,0 +1,48 @@
+I first checked the 'sort' command's version:
+sort --version
+
+'''
+sort (GNU coreutils) 8.29
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Mike Haertel and Paul Eggert
+'''
+
+The following set of commands generate 10M random floats:
+od /dev/urandom --read-bytes=40000000 --format=f | tr ' ' '\n' | sed '/^$/d' | sed '1~3d'> random.txt
+
+Each component of the command does the following:
+od /dev/urandom --read-bytes=40000000 --format=f : Takes 40M bytes i.e. 10M
+floats (each float is 4 bytes) from /dev/urandom and formats it into floats.
+
+tr ' ' '\n': The empty spaces are converted into new lines so that all floats
+are on a different line
+
+sed '/^$/d': Empty lines are deleted
+
+sed '1~3d'> random.txt : Every third line which contains the address is deleted and
+the final output is redirected into a file called random.txt
+
+TIME ANALYSIS
+--------------
+
+time -p sort -g random.txt > /dev/null
+real 17.71
+user 93.53
+sys  0.25
+
+Using the command: time -p sort -g --parallel=N random.txt > /dev/null
+
+N        real          user          sys
+----   ---------     --------      -------
+1        88.14         87.99        0.13
+2        46.38         88.32        0.30
+4        26.33         90.05        0.25
+8        17.58         95.33        0.32
+(time in seconds)
+
+As apparent by the results above, time to sort 10M floats reduces significantly
+as the number of threads working in parallel increases.

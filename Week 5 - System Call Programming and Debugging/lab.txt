@@ -1,0 +1,113 @@
+1. emacs tr2b.c
+   It uses getchar() and putchar to handle I/O.
+
+   gcc -o tr2b ./tr2b.c
+
+2. emacs tr2u.c
+   It uses read() and write() to handle I/O.
+
+   gcc -o tr2u ./tr2u.c
+
+3. head --bytes=5000000 /dev/urandom > crossed.txt
+  to put 5m random bytes in a file called crossed.txt
+
+a) While copying from one file to another (5,000,000 bytes):
+
+--> Buffered Version (tr2b):
+strace -c ./tr2b 'abc' 'xyz' < crossed.txt > crossedBufferedStrace.txt
+
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 17.27    0.000043           5         9           mmap
+ 16.87    0.000042          42         1           execve
+ 16.06    0.000040           0       611           write
+ 14.46    0.000036           0       613           read
+ 11.24    0.000028           7         4           mprotect
+  6.43    0.000016           4         4           fstat
+  5.22    0.000013           7         2           open
+  4.02    0.000010          10         1           munmap
+  2.41    0.000006           3         2           close
+  2.41    0.000006           6         1           brk
+  2.41    0.000006           6         1         1 access
+  1.20    0.000003           3         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.000249                  1250         1 total
+
+--> Unbuffered Version (tr2u):
+strace -c ./tr2u 'abc' 'xyz' < crossed.txt > crossedUnbufferedStrace.txt
+
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 55.82   17.005702           3   5000000           write
+ 44.18   13.457155           3   5000002           read
+  0.00    0.000060          30         2           open
+  0.00    0.000053          53         1         1 access
+  0.00    0.000045           6         7           mmap
+  0.00    0.000025           6         4           mprotect
+  0.00    0.000010          10         1           munmap
+  0.00    0.000010           3         4           brk
+  0.00    0.000009           5         2           fstat
+  0.00    0.000006           3         2           close
+  0.00    0.000003           3         1           arch_prctl
+  0.00    0.000000           0         1           execve
+------ ----------- ----------- --------- --------- ----------------
+100.00   30.463078              10000027         1 total
+
+
+b) While copying to the terminal:
+
+--> Buffered Version (tr2b):
+strace -c ./tr2b 'abc' 'xyz' < crossed.txt
+
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 97.83    0.055949           3     19946           write
+  2.17    0.001243           2       613           read
+  0.00    0.000000           0         2           open
+  0.00    0.000000           0         2           close
+  0.00    0.000000           0         4           fstat
+  0.00    0.000000           0         9           mmap
+  0.00    0.000000           0         4           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         1           brk
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.057192                 20585         1 total
+
+
+--> Unbuffered Version (tr2u):
+strace -c ./tr2u 'abc' 'xyz' < crossed.txt
+
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 56.21   18.667839           4   5000000           write
+ 43.79   14.545641           3   5000002           read
+  0.00    0.000000           0         2           open
+  0.00    0.000000           0         2           close
+  0.00    0.000000           0         2           fstat
+  0.00    0.000000           0         7           mmap
+  0.00    0.000000           0         4           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         4           brk
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00   33.213480              10000027         1 total
+
+
+4. While copying 5,000,000 bytes from one file to another,
+    Buffered Version (tr2b.c):
+    time ./tr2b 'abc' 'xyz' < crossed.txt > crossedBufferedTime.txt
+
+      real	0m0.191s
+      user	0m0.141s
+      sys	  0m0.008s
+
+    Unbuffered Version (tr2u.c):
+    time ./tr2u 'abc' 'xyz' < crossed.txt > crossedUnbufferedTime.txt
+      real	0m8.978s
+      user	0m1.690s
+      sys	  0m7.246s

@@ -1,0 +1,99 @@
+1. Log for the homework?!
+
+2. In the diffutils directory, from the master branch,
+   git checkout 'v3.0' -b "quote"
+
+3. patch -p1 < quote-3.0-patch.txt to apply the new patch.
+   It succeeds.
+
+   patching file src/cmp.c
+   patching file src/diff.c
+   patching file src/diff3.c
+   patching file src/dir.c
+   patching file src/sdiff.c
+   patching file src/util.c
+
+4. Read the documentation for C-x 4 a. It allows the create a ChangeLog file
+   to be associated with the commit.
+
+5. For every file, I ran the command C-x 4 a in emacs and wrote an appropriate
+   message.
+
+   * util.c: changes ` to '
+
+   * sdiff.c: changed ` to '
+
+   * dir.c: changed ` to '
+
+   * diff3.c (diff_type): changed ` to '
+
+   * diff.c: changed ` to '
+
+   * cmp.c: Changed ` to '
+
+6. git commit -F src/ChangeLog
+   When I run git log, I can see my commit (i.e. with my name etc).
+   The message associated with it is the content of the ChangeLog:
+
+   commit ad014b6a07aae62d869d6ef0f5a95121c2168e9e
+   Author: Jayant Mehra <jayant@lnxsrv01.seas.ucla.edu>
+   Date:   Fri Mar 16 19:19:47 2018 -0700
+
+   2018-03-16  Jayant Mehra  <jayant@lnxsrv01.seas.ucla.edu>
+
+        * util.c: changes ` to '
+
+        * sdiff.c: changed ` to '
+
+        * dir.c: changed ` to '
+
+        * diff3.c (diff_type): changed ` to '
+
+        * diff.c: changed ` to '
+
+        * cmp.c: Changed ` to '
+
+
+7. git format-patch -1 --stdout > formatted-patch.txt
+   This creates the new patch in the quote branch and saves it in the
+   formatted-patch.txt file in the current directory.
+
+8. By accident, my src/diff3.c has two random characters 'OB' at the start of the
+   file so when the patch is applied, you have to manually change it.
+
+   My lab partner was Hoang Nguyen. We emailed each our patches to each other.
+
+   After tranferring it to the directory:
+   git checkout v3.0 -b partner to create a new branch
+   git am formatted-patch.txt (it was in some directory so as to make sure the
+   correct one was applied.)
+
+   make check finishes successfully. Tested it by running a src/diff command and it
+   produces the correct output.
+
+9. make distdir
+   The command creates a directory and I cd into it
+   cd diffutils-3.0.1-ad01-dirty/
+
+   The ChangeLog has recorded my entry.
+
+2018-03-16  Jayant Mehra  <jayant@lnxsrv01.seas.ucla.edu>
+
+     2018-03-16  Jayant Mehra  <jayant@lnxsrv01.seas.ucla.edu>
+             * util.c: changes ` to '
+
+             * sdiff.c: changed ` to '
+
+             * dir.c: changed ` to '
+
+             * diff3.c (diff_type): changed ` to '
+
+             * diff.c: changed ` to '
+
+             * cmp.c: Changed ` to '
+
+10. I sshed back into the server with -X flag.
+    ssh -x jayantlnxsr06.seas.ucla.edu
+    cd ~eggert/src/gnu/emacs
+    gitk
+    In the X11 window, searched for merge and took a screenshot.

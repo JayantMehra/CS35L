@@ -1,0 +1,254 @@
+PRE-LAB
+After logging into the SEASNET server 6, I changed to locale by typing
+the shell command:export LC_ALL='C' and made sure locale was
+correct by typing 'locale'.
+
+LAB ASSIGNMENT
+I)
+Used emacs to create a file called words: 'emacs words' and then inserted
+words into it with the following command:
+cat /usr/share/dict/words | sort -u > words
+
+Then I used the 'wget' command to grab the html content of the assignment
+page. It was stored as assign2.html and converted
+it into a text file with the following command:
+mv assign2.html assign2Text.txt
+
+1. tr -c 'A-Za-z' '[\n*]' < assign2Text.txt
+This command outputs the words of the html document with a lot of
+new lines. Basically, the 'tr' command replaces all
+occurences of non alphabets with new lines.
+
+2.tr -cs 'A-Za-z' '[\n*]' < assign2Text.text
+This command squeezes all the new lines into one empty line at the top.
+Therefore, we get all the words which we got
+through the last command but now we get only one newline.
+
+3. tr -cs 'A-Za-z' '[\n*]' < assign2Text.txt | sort
+Same as the previous command, however, the output is sorted according to
+ASCII values (A > a and so on)
+
+4. tr -cs 'A-Za-z' '[\n*]' < assign2Text.txt | sort -u
+The output is sorted again according to the ASCII encoding, but, duplicates
+are stripped off, leaving behind
+only unique words (i.e. no word is repeated).
+
+5. tr -cs 'A-Za-z' '[\n*]' < assign2Text.txt | sort -u | comm - words
+The first and the second parts of the command produce a sorted list of unique
+words in the assignment page.
+The third command takes these words (because - means standard input) and
+compares them against the words in the file words.
+It produces a three column output. The first column is words unique
+to the assign2Text, the second is the words unique to the
+words file, and the third is the words common to both files.
+
+6. tr -cs 'A-Za-z' '[\n*]' < assign2Text.txt | sort -u | comm -23 - words
+The -23 suppress the second and the third columns (produced by the above
+command). Therefore, only those words are
+printed which are unique to the assign2Text file.
+
+II)
+I used 'wget http://mauimapp.com/moolelo/hwnwdseng.htm' to get a copy of
+the 'English to Hawaiian' web page and it
+is stored as 'hwnwdseng.htm'. I then used emacs to write the script
+buildwords.sh. It works as follows:
+
+grep "<td>" $1 |
+This command only grabs the lines from the first argument which have
+'<td>' in them. Therefore, our document is reduced to only the english and
+Hawaiian words with their <td>,</td>,<u>,</u> tags
+(a few more lines apart from these).
+
+sed -n "n;p" |
+This command only takes the even numbered lines from the previous
+command. Only the even numbered lines
+consist of Hawaiian words.
+
+tr [:upper:] [:lower:] |
+All upper case characters from the output of the previous command are
+converted into their lowercase equivalents.
+
+sed "s/<u>//g" | sed "s/<\/u>//g" | sed "s/\`/\'/g" |sed "s/<td>//g" |
+sed "s/<\/td>//g" |
+These commands strip <td>, </td>,<u>, and </u> tags. The sed command with
+the 's' flag actually replaces the
+occurrences of those tags with nothingness.
+
+sed "s/\`/\'/g" |
+To replace the okina with the ASCII apostrophe
+
+sed "s/, /\n/g" |
+Replaces all commas followed by single space with a new line. Therefore,
+words like abc, xyz would be
+put into two lines.
+
+sed "s/^    //g" |
+Removes the leading whitespace from some words.
+
+sed "/[bcdfgjqrstvxyz0-9\? -]/d" |
+Deletes all lines/words containg non Hawaiian letters i.e. containing
+english characters other than those which
+are also a part of the Hawaiian subset.
+
+sort -u |
+Sorts the list of words according to their ASCII encodings and removes
+duplicates.
+
+sed '/^$/d'
+Removes all empty lines and redirects outputs to the standard output. The
+$2 can be added if you want to output to the
+standard output.
+
+To make a Hawaiian words dictionary, i ran the following command:
+cat hwnwdseng.htm | ./buildwords > hwords
+
+III)
+I run the spell checker on the assign2 web page:
+tr -cs 'A-Za-z' '[\n*]' < assign2Text.txt |
+tr [:upper:] [:lower:]  | sort -u | comm -23 - hwords
+
+and on the hwords itself:
+tr -cs 'A-Za-z' '[\n*]' < hwords | sort -u | comm -23 - hwords
+
+i. To check the number of "misspelled" english words on the webpage:
+tr -cs 'A-Za-z' '[\n*]' < assign2Text.txt | tr [:upper:] [:lower:] |
+sort -u | comm -23 - words | wc -w
+---> There are 38 "misspelled" english words on the assignment web page.
+(The command has been explained above.
+'tr [:upper:] [:lower:]' converts all uppercase characters to their
+lowercase equivalents.
+'wc -w' counts the number of words in the output redirected to it.)
+
+ii. tr -cs "pk\'mnwlhaeiou" '[\n*]' < assign2Text.txt |
+sort -u | comm -23 -  hwords | wc -w
+The command above removes all occurrences of non Hawaiian characters with
+spaces and and then works like the commands
+above. There are 199 "misspelled" Hawaiian words.
+
+iii. I made two files - misspelledEnglish and misspelledHawaiian -
+with the following commands respectively:
+tr -cs 'A-Za-z' '[\n*]' < assign2Text.txt | tr [:upper:] [:lower:] |
+sort -u | comm -23 - words > misspelledEnglish
+tr -cs "pk\'mnwlhaeiou" '[\n*]' < assign2Text.txt | sort -u |
+comm -23 -  hwords  > misspelledHawaiian
+
+iv. comm -12 misspelledEnglish hwords
+The command compares the misspelledEnglish file against all the
+Hawaiian words. There are three words which are
+misspelled in English but are spelled correctly in Hawaiian:
+  halau
+  lau
+  wiki
+
+v. comm -12 misspelledHawaiian words
+The command compares the misspelledHawaiian file against all English words.
+Using the wc -w command, I found
+out there are 108 such words. A few examples:
+a
+ail
+ain
+ake
+al
+ale
+alen
+all
+amine
+amp
+ample
+an
+aph
+aul
+awk
+ea
+ee
+el
+em
+emp
+en
+ep
+epa
+h
+ha
+han
+hap
+he
+hei
+hell
+hem
+hen
+hi
+hin
+ho
+how
+howe
+ia
+ie
+ile
+imp
+in
+ion
+iou
+k
+keep
+kin
+l
+lan
+le
+lea
+li
+like
+line
+link
+ll
+ln
+lo
+lowe
+m
+mail
+man
+me
+men
+mi
+ml
+mo
+mp
+n
+name
+ne
+nee
+no
+non
+nu
+num
+o
+om
+on
+one
+op
+ope
+open
+owe
+own
+p
+pe
+pell
+people
+plea
+pu
+u
+ui
+ula
+ule
+ume
+ump
+un
+uni
+w
+wa
+wan
+we
+wh
+wha
+who
+wi
+wo

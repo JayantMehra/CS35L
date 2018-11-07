@@ -1,0 +1,51 @@
+1. The part of the code that uses that line (goto case_long_iso_time_style) has
+been removed in the patch. Therefore, that piece of code would never be called.
+Thus, it was not necessary to remove that line but Brady removed it to not have
+redundant and unnecessary code in the ls code.
+
+2. Now regardless of what the locale is set to, the timestamp for files would
+be in the traditional UNIX style. People from many countries or people
+speaking different languages may not be able to understand the timestamp
+instantaneously. Although there is a fallback option provided, it maybe
+tedious for some people to use every time.
+
+3. Running it on /dev/null causes the following error:
+Traceback (most recent call last):
+  File "randline.py", line 79, in <module>
+    main()
+  File "randline.py", line 73, in main
+    sys.stdout.write(generator.chooseline())
+  File "randline.py", line 34, in chooseline
+    return random.choice(self.lines)
+  File "/usr/local/cs/Python-2.7.14/lib/python2.7/random.py", line 277,
+       in choice
+    return seq[int(self.random() * len(seq))]  # raises IndexError if seq is
+      empty
+IndexError: list index out of range
+
+random.choice can only pick a random element from a non-empty
+sequence (list in our case). Since, for an empty file, the list does
+not contain any lines, the random.choice() function raises an IndexError.
+
+ 4. It causes the following syntax error:
+      File "randline.py", line 56
+        print "1 and two"
+                    ^
+      SyntaxError: Missing parentheses in call to 'print'. Did you mean print
+      (print "1 and two")?
+
+      Instead of this:
+      except IOError as (errno, strerror):
+            parser.error("I/O error({0}): {1}".
+                         format(errno, strerror))
+
+      the python3 syntax needs this (or something equivalent):
+
+      except IOError as xxx_todo_changeme:
+            (errno, strerror) = xxx_todo_changeme.args
+            parser.error("I/O error({0}): {1}".
+                         format(errno, strerror))
+
+    The syntax has changed a little from Python2 to Python3. Now the print
+    statement requires a parentheses around the stuff to print. And IOError
+    is different.

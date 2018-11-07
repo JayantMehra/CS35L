@@ -1,0 +1,71 @@
+My lab partner was Hoang Nguyen.
+
+I looged into my beagleboard:
+sudo ssh debian@192.168.7.2
+
+Then I changed the permission to allow root login by changing PermitRootLogin
+WithoutPassword to PermitRootLogin yes
+
+vim /etc/ssh/sshd_config
+/etc/init.d/ssh restart
+
+Then I exited and logged back in through the following command:
+
+sudo ssh -X root@192.168.7.2
+
+The password was 'root'. The 'X' flag was needed here to set up X11 forwarding.
+
+In the /etc/ssh/sshd_config file, I made sure X11Forwarding was set to yes and
+X11UseLocalhost was set to no.
+
+After connecting to the wifi, I used to following steps to install all the required applications:
+apt-get update
+apt-get install xauth
+apt-get install xterm
+apt-get install gedit
+apt-get install firefox-esr-l10n-en-gb
+
+SERVER STEPS:
+ssh-keygen to generate public and private keys and saved them in the default
+location. The password was 'assignment7'.
+
+To make an account for the client:
+useradd -d /home/jayant -m user1
+passwd user1 : assignment7
+
+I created a .ssh directory and changed the relevant permissions:
+cd /home/jayant
+mkdir .ssh
+chown -R user1 .ssh
+chmod 700 .ssh
+
+My lab partner, Hoang, was able to ssh into my server and run xterm and firefox
+on his machine.
+
+CLIENT STEPS:
+The key had already been created.
+
+I copied the public key to the server
+ssh-copy-id -i Hoang1000@
+
+To make ssh-agent to work, I ran the following command:
+eval "$(ssh-agent)"
+
+To add the private key to authentication agent:
+ssh-add
+
+SSH to server:
+ssh Hoang1000@
+I was able to do this without the need to enter a password.
+
+After exiting, I tried:
+ssh -X Hoang1000@
+
+and ran
+xterm
+firefox
+
+This windows for both GUI applications popped up on my screen.
+Note: I used Mac OSX and had XQuartz running in the background.
+
+It also works for my lab partner.

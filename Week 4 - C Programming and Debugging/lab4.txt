@@ -1,0 +1,83 @@
+Used the following commands:
+To download the old version of coreutils:
+wget http://web.cs.ucla.edu/classes/winter18/cs35L/assign/coreutils-with-bug.tar.gz
+
+Untarred it:
+tar -xvfz coreutils-with-bug.tar.gz
+
+Made a temperory directory:
+mkdir coreutilsInstallWithBug
+
+cd coreutils-with-bug
+./configure --prefix=/u/cs/ugrad/jayant/coreutilsInstallWithBug
+make
+--> This runs into an error and make command cannot be finished because there
+are two functions with the same name but different parameters.
+
+I copied the patch to patchFile.diff
+Applied it:
+patch -p0 < patchFile.diff
+
+make
+make install
+
+
+
+//  REPRODUCED THE BUG SUCCESSFULLY IN THE COREUTILSINSTALLWITHBUG DIRECTORY
+touch -d '1918-11-11 11:00 GMT' wwi-armistice
+touch now
+sleep 1
+touch now1
+TZ=UTC0 /w/home.12/cs/ugrad/jayant/coreutilsInstallWithBug/bin/ls -lt --full-time wwi-armistice now now1
+
+OUTPUT:
+-rw-r--r-- 1 jayant csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+-rw-r--r-- 1 jayant csugrad 0 2018-02-10 15:46:58.725466511 +0000 now1
+-rw-r--r-- 1 jayant csugrad 0 2018-02-10 15:46:48.716132053 +0000 now
+
+DEBUGGING
+gdb /w/home.12/cs/ugrad/jayant/coreutilsInstallWithBug/bin/ls
+info functions
+
+Since they are listed according to their mtimes, I step into the function: 'compare_mtime'
+
+(gdb) break compare_mtime
+(gdb) run -lt
+After multiple 's':
+static int compare_mtime (V a, V b) { return cmp_mtime (a, b, xstrcoll); }
+static int compare_mtime (V a, V b) { return cmp_mtime (a, b, xstrcoll); }
+int diff = a.tv_sec - b.tv_sec;
+return diff ? diff : a.tv_nsec - b.tv_nsec;
+
+If b.tv_sec is very high, then the difference causes an integer overflow in the
+negative direction which wraps around to give a positive integer indicating
+that b is larger.
+
+I quit out of gdb : quit
+
+I cd into coreutils-with-bug
+
+I make a copy of the timespec.h file and make the required changes:
+cp timespec.h ./lib/timespec.h
+
+diff timespec ./lib/timespec.h > patchTime.diff
+
+Changed the diff to have ./lib/timespec.h
+
+Copied it to lab4.diff
+
+patch -p0 < patchTime.diff
+make
+make install
+
+Works:
+-rw-r--r-- 1 jayant csugrad 0 2018-02-10 16:18:13.438115038 +0000 now1
+-rw-r--r-- 1 jayant csugrad 0 2018-02-10 16:18:04.095802807 +0000 now
+-rw-r--r-- 1 jayant csugrad 0 1918-11-11 11:00:00.000000000 +0000 wwi-armistice
+
+Created a change log.
+
+The home directory in the seasnet server is 32-bit. Thus, the time of old file
+is wrapped around to give a date in the future and shows 2054 as the date of
+creation and puts it in the top.
+The temp directory was 64 bit and was able to handle the dates well.

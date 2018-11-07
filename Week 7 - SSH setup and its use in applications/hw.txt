@@ -1,0 +1,22 @@
+1. Since we use ssh to login to the server, each byte flowing from the client to
+the server and vice versa is encrypted and can only be decrypted if the private
+key is known. Moreover, there is a session key after the authentication process to
+encrypt the data which can only be found out if the original private key was known.
+Therefore, the network is secure even if other teams had been listening
+observing all the bytes going across the network.
+
+  1) It will still be secure since the private key is generate by a computer
+  algorithm which is independent of the passphrase used (i.e. will generate
+  different private keys for same passphrases). Therefore, the data sent accross
+  the network will still be secure.
+
+  2) If the other team had access to the USB, then they might be able to steal
+  all private keys and use them to decrypt the data since the public key is
+  available anyway. They might also be able to steal other valuable information.
+
+2. The gpg --verify command compares the message digests of the file and
+the detached signature passed to it for equality. Thus, the creator doesn't matter.
+
+To fix the problem, we can maybe a unique identifier of the creator attached to
+the file and the signature and that should also be compared by the gpg --verfiy
+command.

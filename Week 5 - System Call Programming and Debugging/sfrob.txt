@@ -1,0 +1,56 @@
+TIME COMPARISON FOR sfrob AND sfrobu for different number of inputs:
+
+File    Input         real         user     sys
+------ ----------- ----------- ---------- ---------
+sfrob     10        0m0.004s    0m0.002s   0m0.000s
+sfrobu    10        0m0.004s    0m0.001s   0m0.001s
+
+sfrob     100       0m0.004s    0m0.002s   0m0.000s
+sfrobu    100       0m0.005s    0m0.001s   0m0.002s
+
+sfrob     1000      0m0.005s    0m0.003s   0m0.000s
+sfrobu    1000      0m0.016s    0m0.003s   0m0.011s
+
+sfrob     10000     0m0.014s    0m0.010s   0m0.002s
+sfrobu    10000     0m0.111s    0m0.020s   0m0.088s
+
+sfrob     1000000   0m0.108s    0m0.096s   0m0.005s
+sfrobu    1000000   0m1.145s    0m0.206s   0m0.928s
+---------------------------------------------------
+
+Clearly sfrob is way faster than sfrobu because it does not make as many system
+calls. As the number of input increases, the difference between the times also
+increases.
+
+TIME COMPARISON FOR ALL FILES:
+
+time ./sfrob < frobnicatedFile.txt > frobTimeSFROB.txt
+  real	0m0.018s
+  user	0m0.011s
+  sys	  0m0.003s
+
+time ./sfrobu < frobnicatedFile.txt > frobTimeSFROB.txt
+  real	0m0.146s
+  user	0m0.024s
+  sys	  0m0.119s
+
+time ./sfrobs.sh < frobnicatedFile.txt > frobTimeSFROB.txt
+real	0m0.025s
+user	0m0.015s
+sys	  0m0.009s
+
+time ./sfrobu -f < frobnicatedFile.txt > frobTimeSFROB.txt
+  real	0m0.145s
+  user	0m0.029s
+  sys	  0m0.113s
+
+time ./sfrobu -f < frobnicatedFile.txt > frobTimeSFROB.txt
+  real	0m0.030s
+  user	0m0.025s
+  sys	  0m0.004s
+
+sfrob is way faster than sfrobu because it makes less system calls as it stores
+a large amount of data in a buffer at once using getchar and putchar.
+
+The bash script faster than sfrobu but slower than sfrob because bash is an interpreted
+language whereas C is a compiled language and thus the difference is speeds.

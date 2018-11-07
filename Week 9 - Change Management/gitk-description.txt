@@ -1,0 +1,16 @@
+The top left window shows a visual representation of all branches, commits, and
+merges.
+
+The two windows to the right of it show the author of the commit (with his email)
+and the date on which the commit object was created.
+
+The next window in the first row shows more information about the selected commit
+such as child, branches, follows, author etc.
+
+The window below it shows the change log for the commits and the currently selected
+commit is highlighted in green.
+
+The window below it shows some information about what was changed in the current
+commit (i.e. a diff between the commit and current version).
+
+The big window which occupies the bottom left shows the files changes in the commit.

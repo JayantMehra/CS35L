@@ -1,0 +1,61 @@
+1. I copied the diffutils directory in git format using the following
+command:
+git clone ~eggert/src/gnu/diffutils
+
+2. git log > git-log.txt
+3. git tag > git-tags.txt
+4. Found the commit using:
+   git log --oneline | grep maint:\ quote\ \'like\ this\'\ or\ \"like\ this\",\ not\ \`like\ this\'
+
+   Made the patch with the following command:
+   git format-patch -1 62ca21c --stdout > quote-patch.txt
+
+5. Checked out Version 3.0
+   git checkout v3.0 -b new3.0
+
+6. patch -p1 < quote-patch.txt . In a couple of cases it was not able to figure
+   where to apply the patch. I skipped past those files. Therefore, a few hunks
+   failed.
+
+7. git status
+   Prints out all the modified files which are both being tracked and not. There
+   were no files in the staging area currently.
+
+8. Used the provided links to learn about vc-diff and vc-revert.
+
+9. Using C-x v u, I revert all the changes made in the non .c files. To make the
+required changes in the .c files, I searched for the new text (i.e. the one with
+the +) and made the required changes by hand. Also used M-g M-g to go to specific
+lines (as indicated by the change) if search did not work.
+
+10. Applied all the rejected patches to src/diff.c and src/diff3.c manually i.e.
+    changed ` to ' at multiple locations.
+
+11. Removed some of the files manually or used the following command to delete:
+    find . -type f -name '*.orig' -delete
+
+12. git diff > quote-3.0-patch.txt
+    This creates a patch.
+
+13. ./bootstrap
+    Then I create a patch and apply it with the patch command.
+    ./configure
+    make
+    make check (Had to change some file in tests (as written in piazza)) to make
+    it to work. Also, was in lnxsrv01 so did not have to apply the patch.
+
+    Verification for the src/diff works as it produces the same output as the
+    normal diff. That is without the grave accents and just the apostrophe.
+
+14. I made the two directories using mkdir command.
+    I cloned the original directory in a temp folder and copied all .c files
+    from Version 3.0 to diffutils-3.0 and then copied the c files from my diffutils
+    folder to diffutils-3.0-patch.
+    ./diffutils/src/diff -pru diffutils-3.0 diffutils-3.0-patch >quote-3.0-test.txt
+    to produce the required file and
+
+15. diff -u quote-3.0-test.txt diffutils/quote-3.0-patch.txt
+    to produce the diff output.
+
+    All of the differences are innocuous since most pertain to some kind of file
+    paths or regarding grave accents and apostrophes.

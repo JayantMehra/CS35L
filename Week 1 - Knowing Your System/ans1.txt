@@ -1,0 +1,87 @@
+1. man -k <string> where string is the word we are looking for : Discovered by reading the man man manual page.
+
+2. /usr/local/cs/bin/cp and /usr/local/cs/bin/wc : Used the following commands - which cp , which wc : Discovered through the lab slides.
+
+3. find /usr/bin -name '?' -executable . Used man find.
+   It produced the following output:
+    /usr/bin/X  - a portable, network-transparent window system
+    /usr/bin/w  - Show who is logged on and what they are doing.
+    /usr/bin/[  - evaluate conditional expressions using a set of rules based on the number of arguments.
+
+Found using man.
+ 
+4. /etc/alternatives/emacs is executed. Used the following shell command - readlink /usr/bin/emacs
+
+5. g+s : sets group (g is for group) ID execution
+   o-x: removes the execution permission from others (o is for others)
+
+   Discovered using man chmod
+
+6. find <directory to find> -mtime -21 : Discovered using man find
+
+7. find <directory to find> -type d -mtime -21 : Discovered using man find
+
+8. find /usr/bin -type l | wc : 270 files are are of type symbolic links. Discovered through man find. (The find command finds all the symbolic links and the wc returns the number of lines outputted by the find command)
+
+9. libgpg-error.so.0.10.0 is the oldest regular file. Used the following shell command: ls /usr/lib -lrt | grep ^- | head -n 1  . r reverses the order while sorting (t). grep grabs only the regular file and head gets the first line of output (due to its flag -n). Discovered using man ls and man head.
+
+10. /usr/share/i18n/locales is the usual default path for locale definition files. The data for each category is defined by the following variables:
+ LC_CTYPE
+ LC_COLLATE
+ LC_MESSAGES
+ LC_MONETARY
+ LC_NUMERIC
+ LC_TIME
+ LC_ADDRESS
+ LC_IDENTIFICATION
+ LC_MEASUREMENT
+ LC_NAME
+ LC_PAPER
+ LC_TELEPHONE
+
+
+11. The following commands have 'sort' in their names:
+      Buffer-menu-sort
+      sort-columns                  
+      sort-fields                   
+      sort-lines                  
+      sort-numeric-fields
+      sort-pages
+      sort-paragraphs
+      sort-regexp-fields
+      tabulated-list-col-sort
+      tabulated-list-sort
+
+    Used the following emacs command: C-h a <sort> : Discovered in the lab slide
+
+12. 
+
+C-M-a: runs the command beginning-of-defun (found in global-map) to move backward to the beginning of a defun.
+
+C-M-b: runs the command backward-sexp (found in global-map) to move backward across one balanced expression (sexp).
+
+C-M-c: runs the command exit-recursive-edit (found in global-map) to exit from the innermost recursive edit or minibuffer.
+
+C-M-d: runs the command down-list (found in global-map) to move forward down one level of parentheses.
+
+C-M-e: runs the command end-of-defun (found in global-map) to move forward to next end of defun.
+
+C-M-f: runs the command forward-sexp (found in global-map) to move forward across one balanced expression (sexp).
+
+C-M-g: C-h k shows result for C-g
+
+C-M-h: runs the command mark-defun (found in global-map) to put mark at end of this defun, point at beginning.
+
+I used the C-h k command to search for all the above commands.
+
+
+13. C-g "runs the command keyboard-quit. It signals a quit condition."
+: Emacs commands used: C-h k and then searched for C-g.
+
+14. The yank function pastes the last stretch of killed (cut/copied) text on the editor. Uses the keystroke C-y.
+: Emacs command used: C-h f to search for 'yank function'.
+
+15. The difference between ls -l and C-x d (dired) is that C-x d also outputs the '.' and the '..' files making the total number of files on the buffer equal to 2793. The ls -l command outputs 2791 files and does not output those two files. It requires -a flare to output those files.
+
+Apart from the commands listed above, I used ls -al | wc -l to count the number of files. In emacs, counted the number of files by the column row number.
+

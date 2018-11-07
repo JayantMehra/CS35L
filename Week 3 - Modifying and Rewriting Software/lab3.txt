@@ -1,0 +1,60 @@
+I used the following commands in the following order to fix the bug in
+Coreutils-7.6:
+
+wget ftp://ftp.gnu.org/gnu/coreutils/coreutils-7.6.tar.gz
+to grab Coreutils-7.6 in tarball format.
+
+I untarred and unzipped coreutils-7.6.tar.gz in the home directory:
+tar -xzvf coreutils-7.6.tar.gz
+
+I made a temporary directory to compile and install Coreutils:
+mkdir coreutilsInstall
+
+cd coreutils-7.6 to go inside this directory so as to compile it.
+
+To compile and install Coreutils-7.6 inside the temporary directory made above,
+./configure --prefix=/u/cs/ugrad/jayant/coreutilsInstall
+The prefix sets the target for the 'make' command.
+
+I compiled Coreutils-7.6 in the correct directory by running
+'make' command
+in the current directory (coreutils-7.6).
+
+I installed it using the 'make install' command
+
+Now, I changed my working directory to : coreutilsInstall (i.e. the temporary
+directory created which has the tarball installed).
+
+Output (one line) of ls -l
+drwxr-xr-x 2 jayant csugrad 8192 Feb  3 17:10 bin
+
+Output (one line) of ./bin/ls -l
+drwxr-xr-x 2 jayant csugrad 8192 2018-02-03 17:10 bin
+
+The line above shows the bug!
+
+In the coreutils-7.6 directory:
+I make a path file called path_file.diff using the command emacs path_file.diff
+I run the command
+patch -p1 < path_file.diff
+to apply the patch.
+
+Then I run the make command to rebuild the patched ls.
+
+In the temporary directory, coreutilsInstall, I run the command ./bin/ls -l
+and the output still remains the same:
+drwxr-xr-x 2 jayant csugrad 8192 Feb  3 17:10 bin
+
+In coreutils-7.6 directory, I run the command ./src/ls -l and the output is
+fixed to this:
+-rw-r--r--  1 jayant csugrad   80541 Sep 18  2008 ABOUT-NLS
+
+TESTING:
+1. I made a new file: emacs rob.txt
+./src/ls -l outputted:
+-rw-r--r--  1 jayant csugrad       6 Feb  3 17:24 ron.txt
+
+2. For an old file:
+Changed the date: touch -t 201401181205.09 ron.txt
+./src/ls -l outputted:
+-rw-r--r--  1 jayant csugrad       0 Jan 18  2014 lol2.txt
