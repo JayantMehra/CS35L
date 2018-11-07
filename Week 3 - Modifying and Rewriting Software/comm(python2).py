@@ -3,18 +3,6 @@
 """
 Compares two sorted or unsorted files and outputs a column of lines unique to file1,
 a column of lines unique to file2, and a column of lines common to both files.
-
-Copyright 2018 Jayant Mehra.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the CS35L General Public License as published by
-UCLA Computer Science; either version 1 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-CS3L General Public License for more details.
 """
 
 import random, sys
