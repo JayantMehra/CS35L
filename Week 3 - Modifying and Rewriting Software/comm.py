@@ -4,9 +4,6 @@
 Compares two sorted or unsorted files to produce a column containing lines
 unique to the first file, a column containing lines unique to the second line, and
 a column containing common lines.
-
-Created by Jayant Mehra on 1/25/18.
-Copyright  2018 Jayant Mehra. All rights reserved
 """
 
 import random, sys
